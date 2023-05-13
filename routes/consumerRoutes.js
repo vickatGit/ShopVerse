@@ -1,6 +1,6 @@
 const router=require('express').Router()
 
-router.route("consumer/register").post()
-router.route("consumer/login").post()
+router.route("/register").post()
+router.route("/login").post()
 
 module.exports = router
