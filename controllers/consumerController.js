@@ -29,7 +29,13 @@ const registerConsumer = async (req, res, next) => {
       });
     }
   } catch (error) {
-    next(error);
+    // if(error.code ==11000){
+        res.status(400)
+        res.json({
+            message: "this Email is Already Registred"+error.code
+          });
+    // }
+    // next(error);
   }
 };
 const loginConsumer = async (req,res,next) => {

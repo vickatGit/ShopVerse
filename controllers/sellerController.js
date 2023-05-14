@@ -12,13 +12,13 @@ const registerSeller = async (req, res, next) => {
       const hashedPassword = await bcrypt.hash(password, 6);
       await seller.create({
         email: email,
-        sellerName: name,
+        consumerName: name,
         password: hashedPassword,
       });
       res.status(201);
       res.json({
         email: email,
-        sellerName: name,
+        consumerName: name,
         message: "Registration Successful"
       });
     } else {
@@ -29,10 +29,16 @@ const registerSeller = async (req, res, next) => {
       });
     }
   } catch (error) {
-    next(error);
+    // if(error.code ==11000){
+        res.status(400)
+        res.json({
+            message: "this Email is Already Registred"+error.code
+          });
+    // }
+    // next(error);
   }
 };
-const loginSeller = async (req,res,next) => {
+const loginSeller = async (req, res, next) => {
   try {
     const { email, name, password } = req.body;
     if (email && name && password) {
@@ -76,7 +82,7 @@ const loginSeller = async (req,res,next) => {
     }
   } catch (error) {
     // next(error);
-    console.log(error)
+    console.log(error);
   }
 };
 
