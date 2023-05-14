@@ -2,7 +2,8 @@ const moongoose=require('mongoose')
 const seller=moongoose.Schema({
     email:{
         type:String,
-        required : true
+        required : true,
+        unique:true
     },
     sellerName:{
         type:String,
