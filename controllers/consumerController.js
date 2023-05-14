@@ -23,19 +23,17 @@ const registerConsumer = async (req, res, next) => {
       });
     } else {
       res.status(400);
-      //   throw new Error("Invalid data");
-      res.json({
-        message: "Invalid Data"
-      });
+      throw new Error("Invalid data");
+     
     }
   } catch (error) {
-    // if(error.code ==11000){
+    console.log(" in catch "+typeof error.code)
+    if (error.code == 11000) {
         res.status(400)
-        res.json({
-            message: "this Email is Already Registred"+error.code
-          });
-    // }
-    // next(error);
+        next(new Error("this Email is Already Registred"))
+    }else{
+      next(error);
+    }
   }
 };
 const loginConsumer = async (req,res,next) => {
@@ -61,27 +59,20 @@ const loginConsumer = async (req,res,next) => {
           });
         } else {
           res.status(400);
-          //   throw new Error("Wrong Creedentials");
-          res.json({
-            message: "Wrong Credentials",
-          });
+          throw new Error("Wrong Credentials");
+          
         }
       } else {
         res.status(400);
-        // throw new Error("Registration Required");
-        res.json({
-          message: "Registration Required",
-        });
+        throw new Error("Registration Required");
+        
       }
     } else {
       res.status(400);
-      //   throw new Error("Invalid data");
-      res.json({
-        message: "Invalid Data",
-      });
+      throw new Error("Invalid data");
     }
   } catch (error) {
-    // next(error);
+    next(error);
     console.log(error)
   }
 };

@@ -10,32 +10,31 @@ const registerSeller = async (req, res, next) => {
 
     if (email && name && password) {
       const hashedPassword = await bcrypt.hash(password, 6);
+    
       await seller.create({
         email: email,
-        consumerName: name,
+        sellerName: name,
         password: hashedPassword,
       });
       res.status(201);
       res.json({
         email: email,
-        consumerName: name,
+        sellerName: name,
         message: "Registration Successful"
       });
     } else {
       res.status(400);
-      //   throw new Error("Invalid data");
-      res.json({
-        message: "Invalid Data"
-      });
+      throw new Error("Invalid data");
     }
   } catch (error) {
-    // if(error.code ==11000){
+    console.log(" in catch "+typeof error.code)
+    if (error.code == 11000) {
         res.status(400)
-        res.json({
-            message: "this Email is Already Registred"+error.code
-          });
-    // }
-    // next(error);
+        next(new Error("this Email is Already Registred"))
+    }else{
+      next(error);
+    }
+    
   }
 };
 const loginSeller = async (req, res, next) => {
@@ -61,28 +60,19 @@ const loginSeller = async (req, res, next) => {
           });
         } else {
           res.status(400);
-          //   throw new Error("Wrong Creedentials");
-          res.json({
-            message: "Wrong Credentials",
-          });
+          throw new Error("Wrong Credentials");
         }
       } else {
         res.status(400);
-        // throw new Error("Registration Required");
-        res.json({
-          message: "Registration Required",
-        });
+        throw new Error("Registration Required");
       }
     } else {
       res.status(400);
-      //   throw new Error("Invalid data");
-      res.json({
-        message: "Invalid Data",
-      });
+      throw new Error("Invalid data");
     }
   } catch (error) {
-    // next(error);
     console.log(error);
+    next(error);
   }
 };
 
